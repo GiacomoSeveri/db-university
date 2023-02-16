@@ -23,19 +23,19 @@ WHERE `period` LIKE 'I semestre' and `year` LIKE '1';
 -- 5. Selezionare tutti gli appelli d'esame che avvengono nel pomeriggio (dopo le 14) del 20/06/2020 (21)
 SELECT * 
 FROM `exams` 
-WHERE `date` = DATE('2020-06-20') AND `hour` >= TIME('14:00:00');
+WHERE `date` = '2020-06-20' AND HOUR(`hour`) >= 14;
 
 -- 6. Selezionare tutti i corsi di laurea magistrale (38)
 SELECT * 
 FROM `degrees`
-WHERE `level` LIKE 'magistrale';
+WHERE `level` = 'magistrale';
 
 -- 7. Da quanti dipartimenti è composta l'università? (12)
 SELECT COUNT(*) 
 FROM `departments`;
 
 -- 8. Quanti sono gli insegnanti che non hanno un numero di telefono? (50)
-SELECT * 
+SELECT COUNT(*) AS 'Insegnanti'
 FROM `teachers`
 WHERE `phone` IS NULL;
 
@@ -62,3 +62,12 @@ GROUP BY(`exam_id`);
 SELECT COUNT(`name`) AS 'course name', `department_id` AS 'departments' 
 FROM `degrees` 
 GROUP BY(`department_id`);
+
+
+-- ------------------------------------------ QUERY CON JOIN
+
+
+--Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia
+SELECT `students`.`name`, `students`.`surname`, `degrees`.`name` AS 'courses name' 
+FROM `degrees` JOIN `students` ON `degrees`.`id` = `students`.`degree_id` 
+WHERE `degrees`.`name` = 'Corso di Laurea in Economia';
